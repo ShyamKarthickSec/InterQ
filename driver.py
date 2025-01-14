@@ -1,4 +1,5 @@
 import subprocess
+import datetime
 
 def get_tool_info():
     command = input("Enter the tool/command that needs to be ran along with the input: ")
@@ -13,6 +14,10 @@ def powershell():
     print("In powershell terminal...")
     cmd = get_tool_info()
     in_file = parse_input()
+    timestamp = datetime.datetime.now().isoformat(timespec='seconds').replace(':','-')
+    output_file = f"output-{timestamp}.txt"
+    output = ""
+    error = ""
     with open(in_file,'r') as infile:
         arg2 = infile.readlines()
     for i in arg2:
@@ -21,14 +26,25 @@ def powershell():
             ["powershell", "-ExecutionPolicy", "Bypass", powershell_command],
             capture_output=True,
             text=True)
+        print("The output will be printed into output.txt file as well.")
         print("STDOUT:", result.stdout)
         print("STDERR:", result.stderr)
         print("Return Code:", result.returncode)
+        output += result.stdout 
+        error += result.stderr 
+    with open(output_file,'w') as outfile:
+        outfile.write("Output:" + output)
+        outfile.write("Errors:" + error)
+    
 
 def linux():
     print("In linux terminal...")
     cmd = get_tool_info()
     in_file  = parse_input()
+    timestamp = datetime.datetime.now().isoformat(timespec='seconds').replace(':','-')
+    output_file = f"output-{timestamp}.txt"
+    output = ""
+    error = ""
     with open(in_file,'r') as infile:
         arg2 = infile.readlines()
     for i in arg2:
@@ -39,14 +55,24 @@ def linux():
             capture_output=True,
             text=True
         )
+        print("The output will be printed into output.txt file as well.")
         print("STDOUT:", result.stdout)
         print("STDERR:", result.stderr)
         print("Return Code:", result.returncode)
+        output += result.stdout 
+        error += result.stderr 
+    with open(output_file,'w') as outfile:
+        outfile.write("Output:" + output)
+        outfile.write("Errors:" + error)
 
 def command_prompt():
     print("In Command Prompt...")
     cmd = get_tool_info()
     in_file  = parse_input()
+    timestamp = datetime.datetime.now().isoformat(timespec='seconds').replace(':','-')
+    output_file = f"output-{timestamp}.txt"
+    output = ""
+    error = ""
     with open(in_file,'r') as infile:
         arg2 = infile.readlines()
     for i in arg2:
@@ -57,9 +83,14 @@ def command_prompt():
             capture_output=True,
             text=True
         )
+        print("The output will be printed into output.txt file as well.")
         print("STDOUT:", result.stdout)
         print("STDERR:", result.stderr)
-        print("Return Code:", result.returncode)
+        output += result.stdout 
+        error += result.stderr 
+    with open(output_file,'w') as outfile:
+        outfile.write("Output:" + output)
+        outfile.write("Errors:" + error)
 
 
 if __name__ == "__main__":
